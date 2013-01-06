@@ -1,0 +1,6 @@
+<CREOLE-DIRECTORY ID="org.philgooch.GSpellPlugin" VERSION="1.0" GATE-MIN="6.1" DESCRIPTION="Wrapper for NLM GSpell API to provide spelling correction">
+  <CREOLE>
+      <JAR SCAN="true">GSpellPlugin.jar</JAR>
+      <JAR>lib/gspellProject.jar</JAR>
+  </CREOLE>
+</CREOLE-DIRECTORY>
