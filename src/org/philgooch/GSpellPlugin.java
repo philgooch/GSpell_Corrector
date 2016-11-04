@@ -4,20 +4,32 @@
  */
 package org.philgooch;
 
-import gate.*;
-import gate.creole.*;
-import gate.creole.metadata.*;
-import gate.util.*;
-
 import gate.Annotation;
 import gate.AnnotationSet;
 import gate.Document;
-import gate.Factory;
 import gate.FeatureMap;
+import gate.Factory;
+import gate.ProcessingResource;
+import gate.Resource;
+import gate.creole.ANNIEConstants;
+import gate.creole.AbstractLanguageAnalyser;
+import gate.creole.ExecutionException;
+import gate.creole.ResourceInstantiationException;
+import gate.creole.metadata.CreoleParameter;
+import gate.creole.metadata.CreoleResource;
+import gate.creole.metadata.Optional;
+import gate.creole.metadata.RunTime;
 
-import java.util.*;
+import gate.event.ProgressListener;
+import gate.util.OffsetComparator;
+
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Collections;
+import java.util.List;
 
 import gov.nih.nlm.nls.gspell.*;
 import gov.nih.nlm.nls.gspell.GSpellException;
@@ -81,10 +93,6 @@ public class GSpellPlugin extends AbstractLanguageAnalyser implements
 
     @Override
     public Resource init() throws ResourceInstantiationException {
-        // Default input to GSpell is by Token
-        inputASTypes = new ArrayList<String>();
-        inputASTypes.add("Token");
-
         // Set up default filters
         filters = new ArrayList<String>();
         filters.add("[A-Z/\\.\\-]+");            // filter words in allCaps or allCaps + punctuation
@@ -113,6 +121,12 @@ public class GSpellPlugin extends AbstractLanguageAnalyser implements
             fireProcessFinished();
             return;
         }
+		
+		// Default input to GSpell is by Token
+		if (inputASTypes == null || inputASTypes.isEmpty()) {
+        	inputASTypes = new ArrayList<String>();
+        	inputASTypes.add("Token");
+		}
 
         findOptions = new FindOptions(maxCandidates.intValue(), useWordLengthHeuristic.booleanValue(), truncateSize.intValue(), maxEditDistance.intValue());
 
